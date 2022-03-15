@@ -37,16 +37,6 @@ int main(int argc, char *argv[]){
             
         }
     }
-    
-    
-    // Server server;
-    // Client client;
-
-    // server.read_data();
-    // client.send_data();
-
-    // server.send_data();
-    // client.read_data();
 
     return 0;
 }
