@@ -1,5 +1,8 @@
+#ifndef _SERVER_HPP_
+#define _SERVER_HPP_
+
 #include <unistd.h>
-#include <stdio.h>
+#include <iostream>
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <netinet/in.h>
@@ -16,12 +19,19 @@ class Server{
     struct sockaddr_in address;
     int opt;
     int addrlen;
-    char buffer[BUFFER_SIZE];
     char *ack;
     bool setup_server;
+    int code;
+    uint64_t payload_size;
+    char buffer[BUFFER_SIZE];
+    int bytes;
 
 public:
        
     Server();
-    void read_data();
+    void read_data(uint8_t *data, uint64_t size);
+    void send_ack();
+    ~Server();
 };
+
+#endif

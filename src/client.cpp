@@ -2,7 +2,9 @@
 #include <iostream>
 
 Client::Client(): sock{}, setup_client{false}{
+    
     memset(buffer, 0, BUFFER_SIZE);
+    memset(size_array, 0, SIZEARRAY);
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0){
         std::cout << "Socket creation error \n";
@@ -29,9 +31,10 @@ void Client::connect_to_server(){
     }
 }
 
-void Client::send_data(char *buf, uint64_t size){
-    send(sock , buf , size , 0 );
-    std::cout << "Client : " << buf << std::endl;
+void Client::send_data(uint8_t *buf, uint64_t size, uint8_t code){
+    
+    write(sock , buf , size);
+    
 }
 
 void Client::read_data(){

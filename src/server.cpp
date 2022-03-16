@@ -1,7 +1,8 @@
 #include "server.hpp"
-#include <iostream>
 
-Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"}, setup_server{false}{
+
+Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"}, 
+                setup_server{false}, code{}, payload_size{}, bytes{}{
     memset(buffer, 0, BUFFER_SIZE);
 
     // Creating socket file descriptor
@@ -56,23 +57,33 @@ Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"}, se
     }
 }
 
-void Server::read_data(){
-    char buffer[BUFFER_SIZE];
-    while(true){
+void Server::read_data(uint8_t *data, uint64_t size){
+
         memset(buffer, 0 , BUFFER_SIZE);
-        int bytes = recv(new_socket, buffer, BUFFER_SIZE, 0);
+        bytes = 0;
+        
+        bytes = read(new_socket, buffer, size);
         if(bytes == -1){
             perror("recv error : ");
-            break;
+            close(new_socket);
         }
-        if(bytes == 0){
-            std::cout << "client disconnected\n";
-            break;
+        else if(bytes == 0){
+            std::cout << "read error : client disconnected\n";
+            close(new_socket);
         }
-        std::cout << "Client : " << std::string(buffer, 0, bytes) << std::endl;
-
+        else if(bytes == size){
+            memcpy(data, buffer, size);
+        }
         
-        send(new_socket, ack, strlen(ack), 0);
-    }
+        // std::cout << "Client : " << std::string(buffer, 0, payload_size) << std::endl;
+
+}
+
+void Server::send_ack(){
+
+    send(new_socket, ack, strlen(ack), 0);
+}
+
+Server::~Server(){
     close(new_socket);
 }

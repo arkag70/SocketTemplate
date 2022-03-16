@@ -1,12 +1,17 @@
 cmake_minimum_required(VERSION 3.13)
-project(MyList)
+project(ethcom_lib)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_BUILD_TYPE Debug)
+
+set(ETHCOM ethcomlib)
 
 set(SOURCE
-    src/main.cpp
     src/server.cpp
     src/client.cpp
 )
+
 include_directories(inc)
 
-add_executable(app ${SOURCE})
+add_library(${ETHCOM} STATIC ${SOURCE})
+
+add_subdirectory(examples)
