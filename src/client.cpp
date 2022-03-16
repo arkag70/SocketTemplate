@@ -19,15 +19,11 @@ Client::Client(): sock{}, setup_client{false}{
             std::cout << "\nInvalid address/ Address not supported \n";
         }
         else{
-
+            if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+            {
+                perror("Connection Failed: ");
+            }
         }
-    }
-}
-
-void Client::connect_to_server(){
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-    {
-        perror("Connection Failed: ");
     }
 }
 

@@ -50,7 +50,6 @@ void simulate(){
     
     uint64_t cycle{};
     Client client;
-    client.connect_to_server();
     Player p;
     uint64_t size = sizeof(p);
 
