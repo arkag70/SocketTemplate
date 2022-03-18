@@ -1,4 +1,4 @@
-# SocketTemplate
+# ethcomlib
 This project is developed on linux with c++.
 
 # About
