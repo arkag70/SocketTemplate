@@ -2,8 +2,7 @@
 
 
 Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"}, 
-                setup_server{false}, code{}, payload_size{}, bytes{}{
-    memset(buffer, 0, BUFFER_SIZE);
+                setup_server{false}, code{}{
 
     // Creating socket file descriptor
     if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){
@@ -59,29 +58,43 @@ Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"},
 
 void Server::read_data(uint8_t *data, uint64_t size){
 
-        memset(buffer, 0 , BUFFER_SIZE);
-        bytes = 0;
-        
-        bytes = read(new_socket, buffer, size);
-        if(bytes == -1){
-            perror("recv error : ");
-            close(new_socket);
-        }
-        else if(bytes == 0){
-            std::cout << "read error : client disconnected\n";
-            close(new_socket);
-        }
-        else if(bytes == size){
-            memcpy(data, buffer, size);
-        }
-        
-        // std::cout << "Client : " << std::string(buffer, 0, payload_size) << std::endl;
+    uint64_t transported{};
+    uint64_t leftover{size};
+    uint64_t chunk_size{};
+    memset(data, 0, size);
 
+    while(leftover > 0){
+        
+        if(leftover > BUFFER_SIZE){
+            chunk_size = BUFFER_SIZE;
+        }
+        else{
+            chunk_size = leftover;
+        }
+        read(new_socket, data + transported, chunk_size);
+        transported += chunk_size;
+        leftover = size - transported;
+    }   
 }
 
-void Server::send_ack(){
+void Server::send_data(uint8_t *data, uint64_t size){
+    
+    uint64_t leftover{size};
+    uint64_t transported{};
+    uint64_t chunk_size{};
 
-    send(new_socket, ack, strlen(ack), 0);
+    while(leftover > 0){
+    
+        if(leftover > BUFFER_SIZE){
+            chunk_size = BUFFER_SIZE;
+        }
+        else{
+            chunk_size = leftover;
+        }
+        write(new_socket, data + transported, chunk_size);
+        transported += chunk_size;
+        leftover = size - transported;
+    }
 }
 
 Server::~Server(){

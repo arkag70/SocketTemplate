@@ -2,9 +2,6 @@
 #include <iostream>
 
 Client::Client(): sock{}, setup_client{false}{
-    
-    memset(buffer, 0, BUFFER_SIZE);
-    memset(size_array, 0, SIZEARRAY);
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0){
         std::cout << "Socket creation error \n";
@@ -27,15 +24,45 @@ Client::Client(): sock{}, setup_client{false}{
     }
 }
 
-void Client::send_data(uint8_t *buf, uint64_t size, uint8_t code){
+void Client::send_data(uint8_t *data, uint64_t size){
     
-    write(sock , buf , size);
+    uint64_t leftover{size};
+    uint64_t transported{};
+    uint64_t chunk_size{};
+
+    while(leftover > 0){
     
+        if(leftover > BUFFER_SIZE){
+            chunk_size = BUFFER_SIZE;
+        }
+        else{
+            chunk_size = leftover;
+        }
+        write(sock, data + transported, chunk_size);
+        transported += chunk_size;
+        leftover = size - transported;
+    }
 }
 
-void Client::read_data(){
-    valread = read( sock , buffer, BUFFER_SIZE);
-    std::cout << "Server : " << buffer << std::endl;
+void Client::read_data(uint8_t *data, uint64_t size){
+
+    uint64_t transported{};
+    uint64_t leftover{size};
+    uint64_t chunk_size{};
+    memset(data, 0, size);
+
+    while(leftover > 0){
+        
+        if(leftover > BUFFER_SIZE){
+            chunk_size = BUFFER_SIZE;
+        }
+        else{
+            chunk_size = leftover;
+        }
+        read(sock, data + transported, chunk_size);
+        transported += chunk_size;
+        leftover = size - transported;
+    }   
 }
 
 void Client::close_connection(){

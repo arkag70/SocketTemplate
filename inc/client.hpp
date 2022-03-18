@@ -8,22 +8,19 @@
 #include <string.h>
 #include <vector>
 #define PORT 8080
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 50
 #define SIZEARRAY 8
 
 class Client{
     int sock, valread;
     struct sockaddr_in serv_addr;
-    char buffer[BUFFER_SIZE];
     bool setup_client;
-    std::vector<uint8_t> gateway_wrapper;
-    uint8_t size_array[SIZEARRAY];
 
 public:
     Client();
     void connect_to_server();
-    void send_data(uint8_t *buf, uint64_t size, uint8_t code);
-    void read_data();
+    void send_data(uint8_t *buf, uint64_t size);
+    void read_data(uint8_t *data, uint64_t size);
     void close_connection();
 };
 

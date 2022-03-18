@@ -11,7 +11,7 @@
 #include <arpa/inet.h>
 #define PORT 8080
 #define QUEUE_LEN 3
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 50
 
 class Server{
     
@@ -22,15 +22,12 @@ class Server{
     char *ack;
     bool setup_server;
     int code;
-    uint64_t payload_size;
-    char buffer[BUFFER_SIZE];
-    int bytes;
 
 public:
        
     Server();
+    void send_data(uint8_t *buf, uint64_t size);
     void read_data(uint8_t *data, uint64_t size);
-    void send_ack();
     ~Server();
 };
 

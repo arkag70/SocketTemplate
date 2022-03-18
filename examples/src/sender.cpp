@@ -65,7 +65,7 @@ void simulate(){
         strcpy(p.primary_weapon, weapons[rand() % WEAPON_N].c_str());
         strcpy(p.location, maps[rand() % MAP_N].c_str());
         std::cout << "Client sent: \n" << p;
-        client.send_data((uint8_t *)&p, size, 0);
+        client.send_data((uint8_t *)&p, size);
 
     }
 }
