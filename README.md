@@ -24,5 +24,3 @@ Run the receiver application in a terminal
 
 Run the sender application in another terminal
 > ./build/examples/sender
-
-Currently, IP, PORT, frequency of data tranfer are hard coded.

@@ -10,7 +10,7 @@
 #include <vector>
 #define PORT 8080
 #define HOME_IP "127.0.0.1"
-#define BUFFER_SIZE 50
+#define BUFFER_SIZE 1024
 #define SIZEARRAY 8
 
 class Client{

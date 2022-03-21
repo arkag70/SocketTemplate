@@ -54,7 +54,7 @@ void simulate(){
     uint64_t size = sizeof(p);
 
     while(true){
-        usleep(1000 * 1000);
+        usleep(1000 * 100);
         cycle++;
         
         p.health += (rand() % 3) - 1;

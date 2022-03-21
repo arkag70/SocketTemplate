@@ -11,7 +11,7 @@
 #include <arpa/inet.h>
 #define PORT 8080
 #define QUEUE_LEN 3
-#define BUFFER_SIZE 50
+#define BUFFER_SIZE 1024
 
 class Server{
     
