@@ -16,11 +16,13 @@ to receiver data from sender - read_data()
 clone project
 > git clone https://github.com/arkag70/SocketTemplate.git
 
+Configure the destination "ip" and "port" in examples/inc/sender.hpp
+
 Building project
 > . ./run.sh
 
 Run the receiver application in a terminal
 > ./build/examples/receiver
 
-Run the sender application in another terminal
+Run the sender application in another terminal/VM
 > ./build/examples/sender
