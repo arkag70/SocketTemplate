@@ -49,7 +49,7 @@ std::ostream& operator<<(std::ostream &os, Player &p){
 void simulate(){
     
     uint64_t cycle{};
-    Client client;
+    Client client(ip, port);
     Player p;
     uint64_t size = sizeof(p);
 
