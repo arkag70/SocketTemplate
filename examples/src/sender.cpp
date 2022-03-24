@@ -1,9 +1,12 @@
 #include "sender.hpp"
+#include <fstream>
+
 
 Player::Player(){
 
     srand(time(0));
     id = 0;//rand() % (INT16_MAX - 1) + 1;
+    // std::string n{"arka"};
     strcpy(name, "arka");
     strcpy(location,maps[0].c_str());
     health = 100.0;
@@ -52,9 +55,10 @@ void simulate(){
     Client client(ip, port);
     Player p;
     uint64_t size = sizeof(p);
+    std::cout << "Size of data per cycle : " << size << "\n";
 
     while(true){
-        usleep(1000 * 100);
+        usleep(1000 * 1000);
         cycle++;
         
         p.health += (rand() % 3) - 1;
@@ -71,12 +75,26 @@ void simulate(){
 }
 
 
+void get_image(std::string file_name){
 
+    std::fstream fin{file_name, std::ios::in | std::ios::binary};
+    std::vector<uint8_t> buffer;
+    if(fin){
+        while(!fin.eof()){
+            buffer.push_back(fin.get());
+        }
+        fin.close();
+    }
+    Client client(ip, port);
+    std::cout << "Image buffer size : " << buffer.size() << "\n";
+    client.send_data(buffer.data(), buffer.size());
+}
 
 
 int main(){
 
-    simulate();
+    // simulate();
+    get_image("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/image.jpg");
     
 
     return 0;

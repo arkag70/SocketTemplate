@@ -53,7 +53,7 @@ int main(){
     Player p;
     while(true){
         
-        server.read_data((uint8_t *)&p, sizeof(p));
+        server.read_data((uint8_t *)&p);
         if(p.get_id() != 0)
             std::cout << "Server received : \n" << p;  
     }

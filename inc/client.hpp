@@ -24,7 +24,7 @@ public:
     Client(std::string ip = HOME_IP, uint32_t port = PORT);
     void connect_to_server();
     void send_data(uint8_t *buf, uint64_t size);
-    void read_data(uint8_t *data, uint64_t size);
+    void read_data(uint8_t *data);
     void close_connection();
 };
 

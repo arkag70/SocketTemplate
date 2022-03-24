@@ -7,8 +7,8 @@
 #include <cstdlib>
 #include <string>
 
-const std::string ip = "172.30.1.4";
-const uint32_t port{8080};
+const std::string ip = "172.27.0.1";
+const uint32_t port{8000};
 
 std::string maps[] = {
     "pier", "sanitarium", "black-market", "practice-range", "sakura", "nuclear-reactor"

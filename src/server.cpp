@@ -56,12 +56,16 @@ Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"},
     }
 }
 
-void Server::read_data(uint8_t *data, uint64_t size){
+void Server::read_data(uint8_t *data){
 
+    uint64_t size{};
+    read(new_socket, &size, SIZEARRAY);
+    
     uint64_t transported{};
     uint64_t leftover{size};
     uint64_t chunk_size{};
     memset(data, 0, size);
+    //first data sent is size
 
     while(leftover > 0){
         

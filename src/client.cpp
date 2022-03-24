@@ -29,6 +29,8 @@ void Client::send_data(uint8_t *data, uint64_t size){
     uint64_t leftover{size};
     uint64_t transported{};
     uint64_t chunk_size{};
+    //first batch sends size
+    write(sock, &size, SIZEARRAY);
 
     while(leftover > 0){
     
@@ -44,12 +46,16 @@ void Client::send_data(uint8_t *data, uint64_t size){
     }
 }
 
-void Client::read_data(uint8_t *data, uint64_t size){
+void Client::read_data(uint8_t *data){
 
+    uint64_t size{};
+    read(sock, &size, SIZEARRAY);
+    
     uint64_t transported{};
     uint64_t leftover{size};
     uint64_t chunk_size{};
     memset(data, 0, size);
+    //first data sent is size
 
     while(leftover > 0){
         
