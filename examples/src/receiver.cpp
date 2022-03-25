@@ -1,4 +1,6 @@
 #include "receiver.hpp"
+#include <vector>
+#include <fstream>
 
 Player::Player(){
 
@@ -46,17 +48,44 @@ std::ostream& operator<<(std::ostream &os, Player &p){
     return os;
 }
 
-int main(){
+void receive_simulated_data(){
 
-    std::cout << "Waiting to receive data... Starting server\n";
-    Server server;
     Player p;
+    Server server;
+
     while(true){
         
         server.read_data((uint8_t *)&p);
         if(p.get_id() != 0)
             std::cout << "Server received : \n" << p;  
     }
+    std::cout << "Simulated data received \n";
+}
+
+void receive_file(std::string file_name){
+
+    Server server;
+    
+    std::vector<uint8_t> data;
+    data = server.read_data();
+    std::cout << data.size();
+    
+    std::ofstream fout{file_name, std::ios::out | std::ios::binary};
+    if(fout){
+        for(auto const &byte : data){
+            fout.put(byte);
+        }
+        fout.close();
+        std::cout << "File received successfully\n";
+    }
+}
+
+int main(){
+
+    std::cout << "Waiting to receive data... Starting server\n";
+
+    // receive_simulated_data();
+    receive_file("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/img.jpg");
 
     return 0;
 }

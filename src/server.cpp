@@ -2,7 +2,7 @@
 
 
 Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"}, 
-                setup_server{false}, code{}{
+                setup_server{false}, size{}, data{nullptr}{
 
     // Creating socket file descriptor
     if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){
@@ -10,7 +10,7 @@ Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"},
     }
     else{
         
-        // Forcefully attaching socket to the port 8080
+        // Forcefully attaching socket to the port 8000
         if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))){
             std::cout << "setsockopt failure\n";
         }
@@ -19,7 +19,7 @@ Server::Server():opt{1}, addrlen{sizeof(address)}, ack{"received at server"},
             address.sin_addr.s_addr = INADDR_ANY;
             address.sin_port = htons( PORT );
 
-            // Forcefully attaching socket to the port 8080
+            // Forcefully attaching socket to the port 8000
             if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0){
                 std::cout << "bind failed\n";
             }
@@ -81,6 +81,31 @@ void Server::read_data(uint8_t *data){
     }   
 }
 
+std::vector<uint8_t> Server::read_data(){
+    
+    read(new_socket, &size, SIZEARRAY);
+    std::vector<uint8_t> data(size,0);
+    data.resize(size, 0);
+    
+    uint64_t transported{};
+    uint64_t leftover{size};
+    uint64_t chunk_size{};
+    
+    while(leftover > 0){
+        
+        if(leftover > BUFFER_SIZE){
+            chunk_size = BUFFER_SIZE;
+        }
+        else{
+            chunk_size = leftover;
+        }
+        read(new_socket, &data[0] + transported, chunk_size);
+        transported += chunk_size;
+        leftover = size - transported;
+    }
+    return data;
+}
+
 void Server::send_data(uint8_t *data, uint64_t size){
     
     uint64_t leftover{size};
@@ -102,5 +127,6 @@ void Server::send_data(uint8_t *data, uint64_t size){
 }
 
 Server::~Server(){
+
     close(new_socket);
 }

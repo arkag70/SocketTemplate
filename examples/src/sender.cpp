@@ -75,7 +75,7 @@ void simulate(){
 }
 
 
-void get_image(std::string file_name){
+void send_file(std::string file_name){
 
     std::fstream fin{file_name, std::ios::in | std::ios::binary};
     std::vector<uint8_t> buffer;
@@ -85,8 +85,10 @@ void get_image(std::string file_name){
         }
         fin.close();
     }
+    else{
+        std::cout << "File couldn't be opened\n";
+    }
     Client client(ip, port);
-    std::cout << "Image buffer size : " << buffer.size() << "\n";
     client.send_data(buffer.data(), buffer.size());
 }
 
@@ -94,7 +96,7 @@ void get_image(std::string file_name){
 int main(){
 
     // simulate();
-    get_image("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/image.jpg");
+    send_file("/home/gho1kor/arka/cpp_projects/ethcom/run.sh");
     
 
     return 0;

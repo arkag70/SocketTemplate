@@ -9,7 +9,8 @@
 #include <string.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#define PORT 8080
+#include <vector>
+#define PORT 8000
 #define QUEUE_LEN 3
 #define BUFFER_SIZE 1024
 #define SIZEARRAY 8
@@ -22,13 +23,15 @@ class Server{
     int addrlen;
     char *ack;
     bool setup_server;
-    int code;
+    uint64_t size;
+    uint8_t *data;
 
 public:
        
     Server();
     void send_data(uint8_t *buf, uint64_t size);
     void read_data(uint8_t *data);
+    std::vector<uint8_t> read_data();
     ~Server();
 };
 

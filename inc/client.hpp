@@ -14,11 +14,13 @@
 #define SIZEARRAY 8
 
 class Client{
+private:
     int sock, valread;
     struct sockaddr_in serv_addr;
     bool setup_client;
     uint32_t port;
     std::string ip;
+    uint64_t buffer_size;
 
 public:
     Client(std::string ip = HOME_IP, uint32_t port = PORT);
