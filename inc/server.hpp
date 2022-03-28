@@ -14,6 +14,7 @@
 #define QUEUE_LEN 3
 #define BUFFER_SIZE 1024
 #define SIZEARRAY 8
+#define MAX_RETRIES 10
 
 class Server{
     
@@ -31,7 +32,7 @@ public:
     Server();
     void send_data(uint8_t *buf, uint64_t size);
     void read_data(uint8_t *data);
-    std::vector<uint8_t> read_data();
+    bool read_data(std::vector<uint8_t> &data);
     ~Server();
 };
 

@@ -81,29 +81,34 @@ void Server::read_data(uint8_t *data){
     }   
 }
 
-std::vector<uint8_t> Server::read_data(){
+bool Server::read_data(std::vector<uint8_t> &data){
     
-    read(new_socket, &size, SIZEARRAY);
-    std::vector<uint8_t> data(size,0);
-    data.resize(size, 0);
-    
-    uint64_t transported{};
-    uint64_t leftover{size};
-    uint64_t chunk_size{};
-    
-    while(leftover > 0){
-        
-        if(leftover > BUFFER_SIZE){
-            chunk_size = BUFFER_SIZE;
-        }
-        else{
-            chunk_size = leftover;
-        }
-        read(new_socket, &data[0] + transported, chunk_size);
-        transported += chunk_size;
-        leftover = size - transported;
+    int bytes_read = read(new_socket, &size, SIZEARRAY);
+
+    if(bytes_read != SIZEARRAY){
+        std::cout << "Size not read correctly\n";
+        return false;
     }
-    return data;
+    else{
+        data.resize(size, 0);
+        
+        uint64_t transported{};
+        uint64_t leftover{size};
+        uint64_t chunk_size{};
+        int count{};
+        while(leftover > 0){
+            if(leftover > BUFFER_SIZE){
+                chunk_size = BUFFER_SIZE;
+            }
+            else{
+                chunk_size = leftover;
+            }
+            bytes_read = read(new_socket, &data[0] + transported, chunk_size);
+            transported += bytes_read;
+            leftover = size - transported;
+        }
+        return true;
+    }
 }
 
 void Server::send_data(uint8_t *data, uint64_t size){

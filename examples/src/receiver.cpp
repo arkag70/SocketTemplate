@@ -67,16 +67,21 @@ void receive_file(std::string file_name){
     Server server;
     
     std::vector<uint8_t> data;
-    data = server.read_data();
-    std::cout << data.size();
-    
-    std::ofstream fout{file_name, std::ios::out | std::ios::binary};
-    if(fout){
-        for(auto const &byte : data){
-            fout.put(byte);
+    bool read_status = server.read_data(data);
+    if(read_status){
+        std::cout << "Received " << data.size() << " bytes\n";
+        std::ofstream fout{file_name, std::ios::binary | std::ios::out};
+        if(fout){
+            
+            for(auto const &byt : data){
+                fout << byt;
+            }
+            fout.close();
+            std::cout << "File received successfully\n";
         }
-        fout.close();
-        std::cout << "File received successfully\n";
+    }
+    else{
+        std::cout << "Receive error\n";
     }
 }
 

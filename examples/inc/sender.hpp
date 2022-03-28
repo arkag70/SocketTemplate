@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <string>
 
-const std::string ip = "192.168.9.1";
+const std::string ip = "192.168.9.10";
 const uint32_t port{8000};
 
 std::string maps[] = {

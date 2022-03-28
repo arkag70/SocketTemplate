@@ -80,14 +80,16 @@ void send_file(std::string file_name){
     std::fstream fin{file_name, std::ios::in | std::ios::binary};
     std::vector<uint8_t> buffer;
     if(fin){
-        while(!fin.eof()){
-            buffer.push_back(fin.get());
+        uint8_t byte{};
+        while(fin >> std::noskipws >> byte){
+            buffer.push_back(byte);
         }
         fin.close();
     }
     else{
         std::cout << "File couldn't be opened\n";
     }
+    std::cout << "Size of file : " << buffer.size() << ", last character : " << buffer.at(buffer.size() - 1) << "\n";
     Client client(ip, port);
     client.send_data(buffer.data(), buffer.size());
 }
@@ -96,7 +98,7 @@ void send_file(std::string file_name){
 int main(){
 
     // simulate();
-    send_file("/home/gho1kor/arka/cpp_projects/ethcom/run.sh");
+    send_file("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/image.jpg");
     
 
     return 0;
