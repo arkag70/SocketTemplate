@@ -20,13 +20,14 @@ private:
     bool setup_client;
     uint32_t port;
     std::string ip;
-    uint64_t buffer_size;
+    uint64_t size;
 
 public:
     Client(std::string ip = HOME_IP, uint32_t port = PORT);
     void connect_to_server();
     void send_data(uint8_t *buf, uint64_t size);
-    void read_data(uint8_t *data);
+    bool read_data(uint8_t *data);
+    bool read_data(std::vector<uint8_t> &data);
     void close_connection();
 };
 
