@@ -24,13 +24,18 @@ Client::Client(std::string ip, uint32_t port): sock{}, setup_client{false}, ip{i
     }
 }
 
-void Client::send_data(uint8_t *data, uint64_t size){
+bool Client::send_data(uint8_t *data, uint64_t size){
     
     uint64_t leftover{size};
     uint64_t transported{};
     uint64_t chunk_size{};
     //first batch sends size
-    write(sock, &size, SIZEARRAY);
+    uint64_t bytes_sent = write(sock, &size, SIZEARRAY);
+    
+    if(bytes_sent < SIZEARRAY){
+        std::cout << "Size data is not sent correctly\n";
+        return false;
+    }
 
     while(leftover > 0){
     
@@ -40,10 +45,12 @@ void Client::send_data(uint8_t *data, uint64_t size){
         else{
             chunk_size = leftover;
         }
-        write(sock, data + transported, chunk_size);
-        transported += chunk_size;
+        bytes_sent = write(sock, data + transported, chunk_size);
+        transported += bytes_sent;
         leftover = size - transported;
+        std::cout << "Sent : " << transported << " / " << size << " bytes.\n";
     }
+    return true;
 }
 
 bool Client::read_data(uint8_t *data){
@@ -107,7 +114,7 @@ bool Client::read_data(std::vector<uint8_t> &data){
     }
 }
 
-void Client::close_connection(){
+Client::~Client(){
     if( close(sock) == -1){
         perror("Socket close error : ");
     }

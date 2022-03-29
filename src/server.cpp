@@ -106,6 +106,7 @@ bool Server::read_data(std::vector<uint8_t> &data){
             bytes_read = read(new_socket, &data[0] + transported, chunk_size);
             transported += bytes_read;
             leftover = size - transported;
+            std::cout << "Received : " << transported << " / " << size << " bytes\n";
         }
         return true;
     }

@@ -90,7 +90,7 @@ int main(){
     std::cout << "Waiting to receive data... Starting server\n";
 
     // receive_simulated_data();
-    receive_file("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/img.jpg");
+    receive_file("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/os.pdf");
 
     return 0;
 }

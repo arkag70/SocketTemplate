@@ -91,14 +91,20 @@ void send_file(std::string file_name){
     }
     std::cout << "Size of file : " << buffer.size() << ", last character : " << buffer.at(buffer.size() - 1) << "\n";
     Client client(ip, port);
-    client.send_data(buffer.data(), buffer.size());
+    bool send_status = client.send_data(buffer.data(), buffer.size());
+    if(send_status == true){
+        std::cout << "File sent successfully\n";
+    }
+    else{
+        std::cout << "Error sending file\n";
+    }
 }
 
 
 int main(){
 
     // simulate();
-    send_file("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/image.jpg");
+    send_file("/home/gho1kor/Downloads/bird.mp4");
     
 
     return 0;
