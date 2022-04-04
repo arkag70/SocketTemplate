@@ -1,5 +1,6 @@
 #include "sender.hpp"
 #include <fstream>
+#include <sstream>
 
 
 Player::Player(){
@@ -75,7 +76,7 @@ void simulate(){
 }
 
 
-void send_file(std::string file_name){
+void send_file(std::string ip = "localhost", uint32_t port = 8000 , std::string file_name = ""){
 
     std::fstream fin{file_name, std::ios::in | std::ios::binary};
     std::vector<uint8_t> buffer;
@@ -87,9 +88,11 @@ void send_file(std::string file_name){
         fin.close();
     }
     else{
+        perror("Error");
         std::cout << "File couldn't be opened\n";
+        return;
     }
-    std::cout << "Size of file : " << buffer.size() << ", last character : " << buffer.at(buffer.size() - 1) << "\n";
+    std::cout << "Size of file : " << buffer.size() << " bytes.\n";
     Client client(ip, port);
     bool send_status = client.send_data(buffer.data(), buffer.size());
     if(send_status == true){
@@ -101,10 +104,23 @@ void send_file(std::string file_name){
 }
 
 
-int main(){
+int main(int argc, char *argv[]){
 
-    // simulate();
-    send_file("/home/gho1kor/Downloads/bird.mp4");
+    if(argc < 4){
+        std::cout << " Error : Insufficient arguments\n";
+        return 0;
+    }
+    std::stringstream ss{};
+    for(int i=0; i<argc; ++i){
+        ss << argv[i] << " ";
+    }
+    std::string runnable{};
+    std::string host_ip{};
+    uint32_t port{};
+    std::string file_name{};
+
+    ss >> runnable >> host_ip >> port >> file_name;
+    send_file(ip, port, file_name);
     
 
     return 0;
