@@ -14,4 +14,4 @@ include_directories(inc)
 
 add_library(${ETHCOM} STATIC ${SOURCE})
 
-add_subdirectory(examples)
+add_subdirectory(examples/linux)

@@ -1,6 +1,7 @@
 #include "receiver.hpp"
 #include <vector>
 #include <fstream>
+#include <sstream>
 
 Player::Player(){
 
@@ -85,12 +86,25 @@ void receive_file(std::string file_name){
     }
 }
 
-int main(){
+int main(int argc, char *argv[]){
 
-    std::cout << "Waiting to receive data... Starting server\n";
+    if(argc < 2){
+        std::cout << "Insufficient arguments\n";
+        return 0;
+    }
+    std::stringstream ss;
+    for(int i=0; i<argc; ++i){
+        ss << argv[i] << " ";
+    }
+
+    std::string runnable{};
+    std::string file_name{};
+
+    ss >> runnable >> file_name;
+
 
     // receive_simulated_data();
-    receive_file("/home/gho1kor/arka/cpp_projects/ethcom/examples/data/bird_from_win.mp4");
+    receive_file(file_name);
 
     return 0;
 }
