@@ -87,9 +87,11 @@ class Transport:
         cmd = ""
         if dir == "in":
             cmd = f"./{sender_app} {self.host_ip} {str(self.port)} {self.guestfilepath}"
+
         elif dir == "out":
             cmd = f"./{receiver_app} {self.guestfilepath}"
-        
+
+        print(f"Running > {cmd}")        
         self.scp_execute_func(cmd)
         
 
@@ -114,12 +116,14 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read(CONFIG_FILE)
     host_ip = config['network']['host']
-    guest_ip = config['network']['guest_clone']
+    guest_ip = config['network']['guest']
     port = int(config['network']['port'])
     user = config['network']['user']
     passwd = config['network']['pass']
     sender_app = config['runnables']['sender_app']
-    guest_file = path.join(config['path']['guest_path'], config['path']['guest_file'])
+    receiver_app = config['runnables']['receiver_app']
+    guest_file = config['path']['guest_path'] + "/" + config['path']['guest_file']
     host_file = path.join(config['path']['host_path'], config['path']['host_file'])
+    direction = config['control']['direction']
 
-    t = Transport(host_ip, guest_ip, port, user, passwd, host_file, guest_file, "in")
+    t = Transport(host_ip, guest_ip, port, user, passwd, host_file, guest_file, direction)

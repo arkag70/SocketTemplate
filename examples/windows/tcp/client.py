@@ -34,7 +34,4 @@ class Client:
 
 if __name__ == "__main__":
 	client = Client("192.168.9.11", 8000)
-	content = ""
-	with open("recv/sample_vid.mp4", 'rb') as fi:
-		content = fi.read()
-	client.send_data(content)
+	
